@@ -1,0 +1,193 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>SAP Inventory System</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #0a3d62;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .card {
+      background-color: white;
+      padding: 20px;
+      margin: 15px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    .card h2 {
+      font-size: 18px;
+      color: #0a3d62;
+    }
+    .card input, .card select {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+    }
+    .card button {
+      background-color: #2980b9;
+      color: white;
+      padding: 10px;
+      border: none;
+      width: 100%;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .card button:hover {
+      background-color: #3498db;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    .search-box {
+      width: 300px;
+      margin: auto;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Inventory Management - SAP Style</h1>
+
+  <div class="container">
+    
+    <div class="card">
+      <h2>Add New Item</h2>
+      <input type="text" id="itemName" placeholder="Item Name" />
+      <input type="text" id="category" placeholder="Category" />
+      <input type="number" id="quantity" placeholder="Quantity" />
+      <input type="text" id="supplier" placeholder="Supplier Name" />
+      <button onclick="addItem()">Add Item</button>
+    </div>
+
+
+    <div class="card">
+      <h2>Delete Item</h2>
+      <input type="number" id="deleteId" placeholder="Item ID to delete" />
+      <button onclick="deleteItem()">Delete</button>
+    </div>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="searchBox" placeholder="Search by Item Name..." onkeyup="searchItem()" />
+  </div>
+
+
+  <div class="container">
+    <div class="card" style="width: 100%;">
+      <h2>Inventory Table</h2>
+      <table id="inventoryTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Item</th>
+            <th>Category</th>
+            <th>Qty</th>
+            <th>Supplier</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    let inventory = [];
+    let currentId = 1;
+
+    function addItem() {
+      const name = document.getElementById('itemName').value.trim();
+      const category = document.getElementById('category').value.trim();
+      const quantity = document.getElementById('quantity').value.trim();
+      const supplier = document.getElementById('supplier').value.trim();
+
+      if (!name || !category || !quantity || !supplier) {
+        alert('Please fill all fields.');
+        return;
+      }
+
+      const item = {
+        id: currentId++,
+        name,
+        category,
+        quantity,
+        supplier
+      };
+
+      inventory.push(item);
+      updateTable();
+      clearFields();
+    }
+
+    function deleteItem() {
+      const id = parseInt(document.getElementById('deleteId').value);
+      const index = inventory.findIndex(item => item.id === id);
+
+      if (index !== -1) {
+        inventory.splice(index, 1);
+        updateTable();
+        document.getElementById('deleteId').value = '';
+      } else {
+        alert("Item ID not found");
+      }
+    }
+
+    function updateTable() {
+      const tbody = document.querySelector("#inventoryTable tbody");
+      tbody.innerHTML = "";
+      for (let item of inventory) {
+        const row = `<tr>
+          <td>${item.id}</td>
+          <td>${item.name}</td>
+          <td>${item.category}</td>
+          <td>${item.quantity}</td>
+          <td>${item.supplier}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      }
+    }
+
+    function clearFields() {
+      document.getElementById('itemName').value = '';
+      document.getElementById('category').value = '';
+      document.getElementById('quantity').value = '';
+      document.getElementById('supplier').value = '';
+    }
+
+    function searchItem() {
+      const term = document.getElementById('searchBox').value.toLowerCase();
+      const rows = document.querySelectorAll('#inventoryTable tbody tr');
+      rows.forEach(row => {
+        const itemName = row.children[1].textContent.toLowerCase();
+        if (itemName.includes(term)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
