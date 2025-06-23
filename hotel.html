@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>KSR Food Canteen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="first.js">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    .navbar {
+      background-color: rgba(0, 0, 0, 0.85);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+    }
+
+    .navbar h1 {
+      color: #ffda77;
+      font-size: 22px;
+      margin: 0;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .navbar a:hover {
+      color: #ffda77;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 28px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .navbar ul {
+        display: none;
+        flex-direction: column;
+        background-color: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        width: 180px;
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      .navbar ul.show {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+
+    .content {
+      background-color: rgba(0, 0, 0, 0.75);
+      margin: 100px auto 30px auto;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 1100px;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      color: #ffda77;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    hr {
+      border-top: 2px solid #ffda77;
+      margin: 30px auto;
+      width: 80%;
+    }
+
+    .grid-menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .menu-section {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid #d7cb64;
+      border-radius: 12px;
+      padding: 20px;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .menu-section:hover {
+      transform: scale(1.03);
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .menu-section h3 {
+      margin-top: 0;
+      font-size: 1.6rem;
+      color: #d6b65c;
+    }
+
+    .menu-section ul {
+      padding-left: 0;
+    }
+
+    .menu-section li {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .item {
+      flex: 1;
+    }
+
+    .price {
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+
+    .today-special {
+      background-color: rgba(255, 222, 119, 0.2);
+      border: 2px dashed #d4bb77;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    .today-special h3 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    label {
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    input[type="submit"] {
+      background-color: #ff914d;
+      color: white;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #ff6f00;
+    }
+
+    .comment-section {
+      margin-top: 40px;
+    }
+
+    .comment-section textarea {
+      resize: vertical;
+    }
+  </style>
+</head>
+<body>
+
+  
+  <nav class="navbar">
+    <h1>KSR Canteen</h1>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <ul id="menu">
+      <li><a href="#">Home</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#book">Book</a></li>
+      <li><a href="#comment">Comment</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="content">
+    <h2 id="menu">Menu</h2>
+
+    <div class="today-special">
+      <h3>🍽️ Today's Special</h3>
+      <p><strong>Mysore Masala Dosa</strong> -₹80</p>
+      <p><strong>Chettinadu koli Kuzambu</strong>-₹150</p>
+      <p><strong>Dindugal Dum Biriyani</strong> -₹250</p>
+    </div>
+
+    <div class="grid-menu">
+      <div class="menu-section">
+        <h3>South Indian</h3>
+        <ul>
+          <li><span class="item">Idli</span><span class="price">₹30</span></li>
+          <li><span class="item">Dosa</span><span class="price">₹50</span></li>
+          <li><span class="item">Masala Dosa</span><span class="price">₹60</span></li>
+          <li><span class="item">Medu Vada</span><span class="price">₹25</span></li>
+          <li><span class="item">Sambar Vada</span><span class="price">₹40</span></li>
+          <li><span class="item">Chicken Biryani</span><span class="price">₹120</span></li>
+        </ul>
+      </div>
+
+      <div class="menu-section">
+        <h3>North Indian</h3>
+        <ul>
+          <li><span class="item">Paneer Butter Masala</span><span class="price">₹120</span></li>
+          <li><span class="item">Butter Naan</span><span class="price">₹20</span></li>
+          <li><span class="item">Chola puri</span><span class="price">₹90</span></li>
+          <li><span class="item">Rajma Chawal</span><span class="price">₹80</span></li>
+          <li><span class="item">Butter Chicken</span><span class="price">₹120</span></li>
+        </ul>
+      </div>
+
+      <div class="menu-section">
+        <h3>Veg</h3>
+        <ul>
+          <li><span class="item">Veg Biryani</span><span class="price">₹100</span></li>
+          <li><span class="item">Palak Paneer</span><span class="price">₹110</span></li>
+          <li><span class="item">Mix Veg Curry</span><span class="price">₹90</span></li>
+        </ul>
+      </div>
+
+      <div class="menu-section">
+        <h3>Non-Veg</h3>
+        <ul>
+          <li><span class="item">Chicken Curry</span><span class="price">₹130</span></li>
+          <li><span class="item">Mutton Fry</span><span class="price">₹150</span></li>
+          <li><span class="item">Fish Fry</span><span class="price">₹110</span></li>
+        </ul>
+      </div>
+
+      <div class="menu-section">
+        <h3>Snacks</h3>
+        <ul>
+          <li><span class="item">Samosa</span><span class="price">₹5</span></li>
+          <li><span class="item">Egg puff</span><span class="price">₹20</span></li>
+          <li><span class="item">Veg puff</span><span class="price">₹17</span></li>
+          <li><span class="item">Bonda</span><span class="price">₹5</span></li>
+          <li><span class="item">Chicken Pakoda</span><span class="price">₹50</span></li>
+        </ul>
+      </div>
+
+      <div class="menu-section">
+        <h3>Drinks</h3>
+        <ul>
+          <li><span class="item">Tea</span><span class="price">₹15</span></li>
+          <li><span class="item">Coffee</span><span class="price">₹20</span></li>
+          <li><span class="item">Fresh Juice</span><span class="price">₹40</span></li>
+          <li><span class="item">Lassi</span><span class="price">₹35</span></li>
+        </ul>
+      </div>
+
+      <div class="menu-section">
+        <h3>Traditional Food</h3>
+        <ul>
+          <li><span class="item">Puttu & Kadala Curry</span><span class="price">₹70</span></li>
+          <li><span class="item">Pongal</span><span class="price">₹500</span></li>
+          <li><span class="item">Kerala Kadalai Kuzhambu</span><span class="price">₹150</span></li>
+          <li><span class="item">Idly With Suttney</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr>
+    <br><br>
+    
+
+    <h2 id="book">Book a Table</h2>
+    <form>
+      <label for="name">Your Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" required>
+
+      <input type="submit" value="Book Now">
+    </form>
+
+    <hr>
+    <h2 id="comment">Leave a Comment</h2>
+    <form class="comment-section">
+      <label for="comment">Your Feedback:</label>
+      <textarea id="comment" name="comment" rows="5" placeholder="Write your experience..."></textarea>
+      <input type="submit" value="Submit Comment">
+    </form>
+
+    <hr>
+
+    <h2 id="contact">Contact</h2>
+    <p>📞 Phone: +91-9876543210</p>
+    <p>📧 Email: 12345@hotel.com</p>
+    <p>📍 Address: KSR kalvi nagar, Tiruchengode, Tamil nadu,India- 636811</p>
+  </div>
+
+  <script> 
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.classList.toggle('show');
+    }
+  </script>
+
+</body>
+</html>
